@@ -11,14 +11,5 @@ def coins(amount):
     
     
     
-#def coins1(amount):
-    x=coins(amount)
-    remaining = amount-(x*5)
-    return(remaining//2)
-    
-#def coins2(amount):
-    x=coins(amount)
-    y=coins1(amount)
-    remaining = amount-(x*5)-(y*2)
-    return (remaining)
+
 
