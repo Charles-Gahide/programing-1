@@ -33,14 +33,14 @@ class Player:
 # Represents a basketball team containing multiple players
 # =========================
 class Team:
-    def __init__(self, team_name, name_abrv):
-        self.team_name = team_name  # Full team name
+    def __init__(self, name, name_abrv):
+        self.name = name  # Full team name
         self.name_abrv = name_abrv  # Short abbreviation
         self.players = {}           # Dictionary to store players by name   
 
     # Add a Player object to the team
     def add_player(self, player):
-        self.players[player.name] = player
+        self.players[player.name] = player  #keys is name of the player, Value is player object wich we give as a parameter
 
     # Get a player by their jersey number
     def get_player_by_number(self, number):
@@ -55,7 +55,7 @@ class Team:
 
     # Representation when printing the Team object
     def __repr__(self):
-        return f"{self.team_name} ({self.name_abrv})"
+        return f"{self.name} ({self.name_abrv})"
 
 
 # =========================
@@ -76,7 +76,7 @@ class Match:
                 if not line:
                     continue  # Skip empty lines
 
-                parts = [p.strip() for p in line.split('-')]  # Split line by '-'
+                parts = [p.strip() for p in line.split('-')]  # Split line by '-' and then strip every part of the split
 
                 if line[0].lower() == 't':  # If line starts with 't', it's a team
                     current_team = Team(parts[1], parts[2])
@@ -88,10 +88,10 @@ class Match:
                     player_number = int(parts[0].replace("#", ""))  # Convert number to int
                     player_name = parts[1]
 
-                    player = Player(player_name, player_number)
+                    player = Player(player_name, player_number) #initialize a new player, with the name and number we just got from the file
                     current_team.add_player(player)
 
-    # Read match statistics from a CSV file and update player stats
+    # Read match statistics from a file and update player stats
     def read_match_statistics_file(self, file_name):
         with open(file_name, 'r', encoding='utf-8') as file:
             for line in file:
@@ -151,7 +151,7 @@ class Match:
 
         for team in self.teams:
             output += separator + "\n"
-            output += f"| {team.team_name:<80} |\n"
+            output += f"| {team.name:<80} |\n"
             output += separator + "\n"
 
             # Header row
@@ -183,3 +183,8 @@ class Match:
     def write_match_details(self, file_name):
         with open(file_name, 'w', encoding='utf-8') as file:
             file.write(self.display_match())
+            
+match = Match()
+match.read_match_data_file("Examenportfolio\\basketball\\match_data.txt")
+match.read_match_statistics_file("Examenportfolio\\basketball\\match_statistics.txt")
+match.write_match_details("Examenportfolio\\basketball\\output.txt")

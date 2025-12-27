@@ -24,7 +24,7 @@ class Board:
         self.load_all_positions()
         
     def put_piece_on_position(self, piece, position):
-        self.positions[position]= piece
+        self.positions[position]= piece             #make a key in the dict positions, the key is the poisition and the value is the piece object
 
     def get_piece_by_position(self, position):
         return self.positions.get(position, None)
@@ -60,19 +60,27 @@ class Board:
         self.put_piece_on_position(Piece("Kw"), "e1")
         self.put_piece_on_position(Piece("Kb"), "e8")
         
+    #not used but same logic as save_state    
     def display_board_state(self):
-    # Each square will take 4 characters: "XX |" or "   |"
+        # Loop through rows in reverse order (8 to 1) to display from top to bottom like a chessboard
         for row in range(8, 0, -1):
-            print(f"{row}:", end=" ")  # row number 
+            print(f"{row}:", end=" ")  # row number, e.g., "8: ", "7: ", etc.
+
+            # Loop through columns 'a' to 'h' (left to right)
             for col in "abcdefgh":     
-                pos = f"{col}{row}"
-                piece = self.get_piece_by_position(pos)
+                pos = f"{col}{row}"  # create position string like "a8", "b7", etc.
+                piece = self.get_piece_by_position(pos)  # variable named piece holds Piece object from current position
+
                 if piece:
-                    # Use 2-character piece code, pad to 2 spaces
+                    # If there is a piece, print its 2-character code (like 'wP' or 'bK')
+                    # Pad to 2 spaces using '<2' for alignment, followed by a vertical separator '|'
                     print(f"{piece.get_code():<2} |", end=" ")
                 else:
+                    # If no piece is present at this position, print empty spaces for alignment
                     print("   |", end=" ")
-            print()  # new line after each row
+
+            print()  # new line after each row to move to the next row on the board
+
 
         # Column headers
         print("   ", end="")  # indent to line up with row numbers
@@ -81,21 +89,19 @@ class Board:
         print()  # newline
 
     def move_piece(self, start_pos, end_pos):
-        piece = self.get_piece_by_position(start_pos)
+        piece = self.get_piece_by_position(start_pos)   # variable named piece holds Piece object from current position
         if piece is None:
             raise ValueError(f"No piece at {start_pos}")
 
-        piece_to_take = self.get_piece_by_position(end_pos)
-        
-        # Check for friendly piece
-        if piece_to_take is None or piece.get_player() != piece_to_take.get_player():
-            # Move the piece
-            self.put_piece_on_position(piece, end_pos)
+        piece_to_take = self.get_piece_by_position(end_pos) #variable holds Piece object from position we want to go to
+     
+        if piece_to_take is None or piece.get_player() != piece_to_take.get_player():   # Check for friendly piece
+            self.put_piece_on_position(piece, end_pos)  # Move the piece
             del self.positions[start_pos]
         else:
             raise ValueError("Illegal move: cannot move to friendly territory")
 
-    def process_movements(self, movements):
+    def process_movements(self, movements):         
         for move in movements:
             self.move_piece(move[0], move[1])
 
@@ -109,8 +115,7 @@ class Board:
     
     def save_state(self, file_name):
         with open(file_name, 'w', encoding='utf-8') as file:
-            # Build the board as a string instead of printing
-            board_str = ""
+            board_str = ""       # Build the board as a string
             for row in range(8, 0, -1):
                 board_str += f"{row}: "
                 for col in "abcdefgh":
@@ -122,7 +127,7 @@ class Board:
                         board_str += "   | "
                 board_str += "\n"
             
-            # Add column headers
+            # Add column headers at the bottom
             board_str += "   "  # indent
             for col in "abcdefgh":
                 board_str += f" {col}   "
@@ -140,4 +145,4 @@ def process_chess_moves(movement_file_name, output_file_name):
         
         
 process_chess_moves("Examenportfolio\\chess\\movements.txt", "Examenportfolio\\chess\\output.txt")
-
+board.display_board_state

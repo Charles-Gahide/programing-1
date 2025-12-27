@@ -1,7 +1,7 @@
 Bulbasaur,Grass-Poison
 Charmeleon,Fire
 Pidgey,Normal-Flying
-Rattata,
-Raticate,
+Rattata
+Raticate
 Spearow,Normal-Flying
-Pikachu,
+Pikachu
