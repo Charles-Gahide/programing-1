@@ -86,7 +86,7 @@ class Shop:
             stock = self.__stock
 
             if name not in stock.parts_dict:
-                raise ValueError(f"No more {name}'s in stock")
+                raise ValueError("Item not in stock")
 
             part = stock.parts_dict[name]
 
